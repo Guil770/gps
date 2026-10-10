@@ -49,6 +49,17 @@ nav button.on{color:var(--ac);box-shadow:inset 0 2px 0 var(--ac)}
 #lvl:before{left:50%;top:0;bottom:0;width:1px}#lvl:after{top:50%;left:0;right:0;height:1px}
 #bub{position:absolute;width:34px;height:34px;border-radius:50%;background:var(--ac);left:calc(50% - 17px);top:calc(50% - 17px)}
 .msg{color:var(--mu);font-size:14px;margin:8px 0}
+#s-mapa{position:relative}
+#loc{position:absolute;left:12px;top:12px;z-index:1000;box-shadow:0 2px 8px #0008}
+#loc.on{background:var(--pn);color:var(--ok);border:1px solid var(--ln)}
+@media (orientation:landscape) and (max-height:520px){
+  header{padding:4px 16px}header .sp{font-size:30px}
+  #s-mapa.on{flex-direction:row}
+  .coords{grid-template-columns:1fr;width:190px;border-top:0;border-left:1px solid var(--ln);overflow:auto;align-content:center}
+  nav button{padding:7px 2px}
+  #dial{width:min(52vh,260px)}#lvl{width:min(48vh,200px)}
+  section{padding:8px 16px}
+}
 </style>
 </head>
 <body>
@@ -61,6 +72,7 @@ nav button.on{color:var(--ac);box-shadow:inset 0 2px 0 var(--ac)}
 <main>
   <section id="s-mapa" class="on">
     <div id="map"></div>
+    <button id="loc" class="on">A seguir</button>
     <div class="coords">
       <div><small>Latitude</small><b id="lat">–</b></div>
       <div><small>Longitude</small><b id="lon">–</b></div>
@@ -207,8 +219,16 @@ function onPos(p){
   }
   pt.d=dist;track.push(pt);last=pt;line.addLatLng(ll);stats();
 }
-map.on('dragstart',()=>{map._userMoved=true});
-map.on('zoomstart',()=>{});
+function setFollow(on){
+  map._userMoved=!on;
+  $('loc').classList.toggle('on',on);
+  $('loc').textContent=on?'A seguir':'Centrar';
+}
+map.on('dragstart',()=>setFollow(false));
+$('loc').onclick=()=>{
+  setFollow(true);
+  if(cur)map.setView([cur.lat,cur.lon],Math.max(map.getZoom(),16));
+};
 function stats(){
   $('d').textContent=fmt(dist/1000,2)+' km';
   $('t').textContent=hms(rec||track.length?Date.now()-t0:0);
@@ -222,7 +242,7 @@ function stats(){
 setInterval(()=>{if(rec)$('t').textContent=hms(Date.now()-t0)},1000);
 
 navigator.geolocation.watchPosition(onPos,e=>{$('acc').textContent='Erro: '+e.message},{enableHighAccuracy:true,maximumAge:0,timeout:15000});
-map.on('dblclick',()=>{map._userMoved=false});
+
 
 // recording
 let wl=null;
