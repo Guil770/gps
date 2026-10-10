@@ -10,6 +10,12 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
+  .jeeps{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.jeeps div{background:var(--pn);border-radius:10px;padding:8px;text-align:center}
+.jeeps small{color:var(--mu);font-size:12px}
+.jeeps svg{width:100%;height:auto}
+.jeep{fill:var(--tx)}
+.cut{fill:var(--pn)}
 :root{--bg:#14201c;--pn:#1e302a;--ln:#2f463d;--tx:#e8efe6;--mu:#8fa396;--ac:#f2a93b;--ok:#7fcf9a}
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
@@ -119,6 +125,37 @@ nav button.on{color:var(--ac);box-shadow:inset 0 2px 0 var(--ac)}
 
   <section id="s-incl">
     <div id="lvl"><div id="bub"></div></div>
+    <div class="jeeps">
+  <div>
+    <svg viewBox="0 0 200 140">
+      <line x1="10" y1="132" x2="190" y2="132" stroke="#2f463d" stroke-width="2"/>
+      <g id="jr">
+        <rect class="jeep" x="22" y="92" width="26" height="40" rx="6"/>
+        <rect class="jeep" x="152" y="92" width="26" height="40" rx="6"/>
+        <rect class="jeep" x="40" y="60" width="120" height="44" rx="6"/>
+        <path class="jeep" d="M52 62 L60 22 H140 L148 62 Z"/>
+        <path class="cut" d="M65 56 L69 30 H131 L135 56 Z"/>
+        <circle class="cut" cx="58" cy="84" r="7"/>
+        <circle class="cut" cx="142" cy="84" r="7"/>
+      </g>
+    </svg>
+    <small>Lateral</small>
+  </div>
+  <div>
+    <svg viewBox="0 0 250 120">
+      <line x1="10" y1="110" x2="240" y2="110" stroke="#2f463d" stroke-width="2"/>
+      <g id="jp">
+        <path class="jeep" d="M26 88 V34 H156 L170 58 H226 V88 Z"/>
+        <path class="cut" d="M44 42 H148 L158 56 H44 Z"/>
+        <circle class="jeep" cx="70" cy="88" r="22"/>
+        <circle class="jeep" cx="190" cy="88" r="22"/>
+        <circle class="cut" cx="70" cy="88" r="9"/>
+        <circle class="cut" cx="190" cy="88" r="9"/>
+      </g>
+    </svg>
+    <small>Frente / trás</small>
+  </div>
+</div>
     <div class="grid">
       <div class="k"><small>Inclinação (frente/trás)</small><b id="pi">–</b></div>
       <div class="k"><small>Inclinação lateral</small><b id="ro">–</b></div>
@@ -314,6 +351,8 @@ function onOri(e){
   $('bub').style.transform=`translate(${k*R}px,${m*R}px)`;
   if(r<0)mL=Math.max(mL,-r);else mR=Math.max(mR,r);
   $('mL').textContent=Math.round(mL)+'°';$('mR').textContent=Math.round(mR)+'°';
+  $('jr').setAttribute('transform',`rotate(${r} 100 132)`);
+$('jp').setAttribute('transform',`rotate(${-p} 126 110)`);
 }
 function onMot(e){
   const a=e.accelerationIncludingGravity;if(!a||a.x==null)return;
