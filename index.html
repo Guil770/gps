@@ -124,7 +124,6 @@ nav button.on{color:var(--ac);box-shadow:inset 0 2px 0 var(--ac)}
   </section>
 
   <section id="s-incl">
-    <div id="lvl"><div id="bub"></div></div>
     <div class="jeeps">
   <div>
     <svg viewBox="0 0 200 140">
@@ -347,8 +346,7 @@ function onOri(e){
   bet=e.beta||0;gam=e.gamma||0;
   const p=bet-off.b,r=gam-off.g;
   $('pi').textContent=fmt(p)+'°';$('ro').textContent=fmt(r)+'°';
-  const k=Math.max(-1,Math.min(1,r/45)),m=Math.max(-1,Math.min(1,p/45)),R=($('lvl').clientWidth/2-17);
-  $('bub').style.transform=`translate(${k*R}px,${m*R}px)`;
+
   if(r<0)mL=Math.max(mL,-r);else mR=Math.max(mR,r);
   $('mL').textContent=Math.round(mL)+'°';$('mR').textContent=Math.round(mR)+'°';
   $('jr').setAttribute('transform',`rotate(${r} 100 132)`);
