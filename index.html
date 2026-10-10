@@ -10,12 +10,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
-  .jeeps{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
-.jeeps div{background:var(--pn);border-radius:10px;padding:8px;text-align:center}
-.jeeps small{color:var(--mu);font-size:12px}
-.jeeps svg{width:100%;height:auto}
-.jeep{fill:var(--tx)}
-.cut{fill:var(--pn)}
 :root{--bg:#14201c;--pn:#1e302a;--ln:#2f463d;--tx:#e8efe6;--mu:#8fa396;--ac:#f2a93b;--ok:#7fcf9a}
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
@@ -56,6 +50,12 @@ nav button.on{color:var(--ac);box-shadow:inset 0 2px 0 var(--ac)}
 #bub{position:absolute;width:34px;height:34px;border-radius:50%;background:var(--ac);left:calc(50% - 17px);top:calc(50% - 17px)}
 .msg{color:var(--mu);font-size:14px;margin:8px 0}
 #s-mapa{position:relative}
+.jeeps{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 10px}
+.jeeps div{background:var(--pn);border-radius:10px;padding:8px;text-align:center}
+.jeeps small{color:var(--tx);font-size:14px;font-variant-numeric:tabular-nums}
+.jeeps svg{width:100%;height:auto;max-height:34vh}
+.jeep{fill:var(--tx)}
+.cut{fill:var(--pn)}
 #loc{position:absolute;left:12px;top:12px;z-index:1000;box-shadow:0 2px 8px #0008}
 #loc.on{background:var(--pn);color:var(--ok);border:1px solid var(--ln)}
 @media (orientation:landscape) and (max-height:520px){
@@ -63,7 +63,7 @@ nav button.on{color:var(--ac);box-shadow:inset 0 2px 0 var(--ac)}
   #s-mapa.on{flex-direction:row}
   .coords{grid-template-columns:1fr;width:190px;border-top:0;border-left:1px solid var(--ln);overflow:auto;align-content:center}
   nav button{padding:7px 2px}
-  #dial{width:min(52vh,260px)}#lvl{width:min(48vh,200px)}
+  #dial{width:min(52vh,260px)}.jeeps svg{max-height:42vh}#s-incl .grid{grid-template-columns:repeat(4,1fr)}
   section{padding:8px 16px}
 }
 </style>
@@ -125,39 +125,37 @@ nav button.on{color:var(--ac);box-shadow:inset 0 2px 0 var(--ac)}
 
   <section id="s-incl">
     <div class="jeeps">
-  <div>
-    <svg viewBox="0 0 200 140">
-      <line x1="10" y1="132" x2="190" y2="132" stroke="#2f463d" stroke-width="2"/>
-      <g id="jr">
-        <rect class="jeep" x="22" y="92" width="26" height="40" rx="6"/>
-        <rect class="jeep" x="152" y="92" width="26" height="40" rx="6"/>
-        <rect class="jeep" x="40" y="60" width="120" height="44" rx="6"/>
-        <path class="jeep" d="M52 62 L60 22 H140 L148 62 Z"/>
-        <path class="cut" d="M65 56 L69 30 H131 L135 56 Z"/>
-        <circle class="cut" cx="58" cy="84" r="7"/>
-        <circle class="cut" cx="142" cy="84" r="7"/>
-      </g>
-    </svg>
-    <small>Lateral</small>
-  </div>
-  <div>
-    <svg viewBox="0 0 250 120">
-      <line x1="10" y1="110" x2="240" y2="110" stroke="#2f463d" stroke-width="2"/>
-      <g id="jp">
-        <path class="jeep" d="M26 88 V34 H156 L170 58 H226 V88 Z"/>
-        <path class="cut" d="M44 42 H148 L158 56 H44 Z"/>
-        <circle class="jeep" cx="70" cy="88" r="22"/>
-        <circle class="jeep" cx="190" cy="88" r="22"/>
-        <circle class="cut" cx="70" cy="88" r="9"/>
-        <circle class="cut" cx="190" cy="88" r="9"/>
-      </g>
-    </svg>
-    <small>Frente / trás</small>
-  </div>
-</div>
+      <div>
+        <svg viewBox="0 0 200 140">
+          <line x1="10" y1="132" x2="190" y2="132" stroke="#2f463d" stroke-width="2"/>
+          <g id="jr">
+            <rect class="jeep" x="22" y="92" width="26" height="40" rx="6"/>
+            <rect class="jeep" x="152" y="92" width="26" height="40" rx="6"/>
+            <rect class="jeep" x="40" y="60" width="120" height="44" rx="6"/>
+            <path class="jeep" d="M52 62 L60 22 H140 L148 62 Z"/>
+            <path class="cut" d="M65 56 L69 30 H131 L135 56 Z"/>
+            <circle class="cut" cx="58" cy="84" r="7"/>
+            <circle class="cut" cx="142" cy="84" r="7"/>
+          </g>
+        </svg>
+        <small id="lt">Lateral 0,0°</small>
+      </div>
+      <div>
+        <svg viewBox="0 0 250 120">
+          <line x1="10" y1="110" x2="240" y2="110" stroke="#2f463d" stroke-width="2"/>
+          <g id="jp">
+            <path class="jeep" d="M26 88 V34 H156 L170 58 H226 V88 Z"/>
+            <path class="cut" d="M44 42 H148 L158 56 H44 Z"/>
+            <circle class="jeep" cx="70" cy="88" r="22"/>
+            <circle class="jeep" cx="190" cy="88" r="22"/>
+            <circle class="cut" cx="70" cy="88" r="9"/>
+            <circle class="cut" cx="190" cy="88" r="9"/>
+          </g>
+        </svg>
+        <small id="fb">Frente/trás 0,0°</small>
+      </div>
+    </div>
     <div class="grid">
-      <div class="k"><small>Inclinação (frente/trás)</small><b id="pi">–</b></div>
-      <div class="k"><small>Inclinação lateral</small><b id="ro">–</b></div>
       <div class="k"><small>Máx. esquerda</small><b id="mL">0°</b></div>
       <div class="k"><small>Máx. direita</small><b id="mR">0°</b></div>
       <div class="k"><small>Força G atual</small><b id="g">–</b></div>
@@ -324,7 +322,8 @@ function drawChart(){
 }
 
 // sensors
-let compassOn=false,off={b:0,g:0},bet=0,gam=0,mL=0,mR=0,gM=0;
+let compassOn=false,off={r:0,p:0},mode=null,zeroNext=false,mL=0,mR=0,gM=0;
+const SIGN_LAT=1,SIGN_FB=1; // mete -1 para inverter o sentido do jipe (lateral / frente-trás)
 async function sensores(){
   try{
     if(window.DeviceOrientationEvent&&DeviceOrientationEvent.requestPermission){
@@ -336,28 +335,42 @@ async function sensores(){
   }catch(e){$('cm').textContent='Permissão negada. Em Definições > Safari > Movimento e orientação, ativa o acesso.'}
 }
 function onOri(e){
+  const a=(((screen.orientation?screen.orientation.angle:window.orientation)||0)+360)%360;
   let h=e.webkitCompassHeading;
   if(h==null&&e.alpha!=null&&e.absolute)h=(360-e.alpha)%360;
   if(h!=null){
+    h=(h+a)%360;
     compassOn=true;
     $('rose').style.transform=`rotate(${-h}deg)`;
     $('deg').textContent=Math.round(h)+'°';$('card').textContent=card(h);$('hh').textContent=card(h);
   }
-  bet=e.beta||0;gam=e.gamma||0;
-  const p=bet-off.b,r=gam-off.g;
-  $('pi').textContent=fmt(p)+'°';$('ro').textContent=fmt(r)+'°';
-
+  if(e.beta==null)return;
+  // vetor "para cima" no referencial do telemóvel (sem bloqueio de eixos)
+  const B=e.beta*Math.PI/180,G=e.gamma*Math.PI/180;
+  const ux=-Math.cos(B)*Math.sin(G),uy=Math.sin(B),uz=Math.cos(B)*Math.cos(G);
+  // passar para o referencial do ecrã (certo na vertical e na horizontal)
+  let sx=ux,sy=uy;
+  if(a===90){sx=-uy;sy=ux}else if(a===270){sx=uy;sy=-ux}else if(a===180){sx=-ux;sy=-uy}
+  if(mode===null)mode=Math.abs(uz)>Math.abs(sy)?'flat':'up'; // deitado ou em pé
+  const flat=mode==='flat',D=180/Math.PI;
+  const rr=Math.atan2(-sx,flat?uz:sy)*D;                          // lado direito para baixo = +
+  const pp=(flat?Math.atan2(sy,uz):-Math.atan2(uz,sy))*D;         // nariz para cima = +
+  if(zeroNext){off={r:rr,p:pp};zeroNext=false}
+  const n=x=>((x+540)%360)-180;
+  const r=SIGN_LAT*n(rr-off.r),p=SIGN_FB*n(pp-off.p);
+  $('jr').setAttribute('transform',`rotate(${r.toFixed(1)} 100 132)`);
+  $('jp').setAttribute('transform',`rotate(${(-p).toFixed(1)} 126 110)`);
+  $('lt').textContent='Lateral '+fmt(Math.abs(r))+'°'+(r>1?' direita':r<-1?' esquerda':'');
+  $('fb').textContent='Frente/trás '+fmt(Math.abs(p))+'°'+(p>1?' a subir':p<-1?' a descer':'');
   if(r<0)mL=Math.max(mL,-r);else mR=Math.max(mR,r);
   $('mL').textContent=Math.round(mL)+'°';$('mR').textContent=Math.round(mR)+'°';
-  $('jr').setAttribute('transform',`rotate(${r} 100 132)`);
-$('jp').setAttribute('transform',`rotate(${-p} 126 110)`);
 }
 function onMot(e){
   const a=e.accelerationIncludingGravity;if(!a||a.x==null)return;
   const g=Math.hypot(a.x,a.y,a.z)/9.81;
   gM=Math.max(gM,g);$('g').textContent=fmt(g,2)+' G';$('gM').textContent=fmt(gM,2)+' G';
 }
-$('zero').onclick=()=>{off={b:bet,g:gam}};
+$('zero').onclick=()=>{mode=null;zeroNext=true};
 $('zmax').onclick=()=>{mL=mR=gM=0;$('mL').textContent=$('mR').textContent='0°';$('gM').textContent='0,00'};
 
 // weather
